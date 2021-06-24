@@ -1,5 +1,8 @@
 const CREATE_PROJECT = "CREATE_PROJECT";
 const CREATE_PROJECT_ERROR = "CREATE_PROJECT_ERROR";
+const GET_PROJECTS = "GET_PROJECTS";
+const GET_PROJECTS_ERROR = "GET_PROJECTS_ERROR";
+
 
 const initState = {
     projects: [
@@ -15,9 +18,17 @@ const ProjectReducer = (state = initState, action) => {
         case CREATE_PROJECT:
             console.log('Created project', action.project);
             return state;
-        
+
         case CREATE_PROJECT_ERROR:
             console.log('Create project error', action.error);
+            return state;
+
+        case GET_PROJECTS:
+            console.log('Get projects from database', action.projects);
+            return { ...state, projects: action.projects };
+
+        case GET_PROJECTS_ERROR:
+            console.log('Get projects from database error', action.error);
             return state;
 
         default:

@@ -18,13 +18,37 @@ export const createProject = (project) => {
             createdAt: new Date()
 
         }).then(() => dispatch({
-            type: 'CREATE_PROJECT', project: project
+            type: 'CREATE_PROJECT', project: project //dispatch the action after executing some code
         })).catch((error) => dispatch({
             type: 'CREATE_PROJECT_ERROR', error
         }))
-
-        //dispatch the action after executing some code
-
     }
 };
+
+
+export const getProjects = () => {
+
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+
+        //make async call to database
+
+        //get a reference to our firestore database
+        const firestore = getFirestore();
+
+        const projects = [];
+        //access to projects collection and add the project to it
+        firestore.collection('projects').get()
+            .then(data => {
+                data.forEach(doc => {
+                    const project = doc.data();
+                    project.id = doc.id;
+                    projects.push({id:doc.id, ...doc.data()});
+                });
+
+                dispatch({ type: 'GET_PROJECTS', projects });
+            }).catch((error) => dispatch({
+                type: 'GET_PROJECTS_ERROR', error
+            }))
+    }
+}
 

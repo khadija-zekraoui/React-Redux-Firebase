@@ -2,8 +2,14 @@ import ProjectList from '../projects/ProjectList'
 import { Component } from 'react'
 import Notifications from './Notifications'
 import { connect } from 'react-redux';
+import { getProjects } from '../../store/actions/projectActions';
 
 class Dashboard extends Component {
+
+    componentDidMount() {
+        this.props.getProjects();
+    }
+
     render() {
         const { projects } = this.props;
         return (
@@ -27,5 +33,12 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        //we can use this function by using component's props
+        getProjects: () => dispatch(getProjects())
+    }
+}
+
 //connect  this component with redux's store
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
